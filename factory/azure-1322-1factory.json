@@ -1,0 +1,15 @@
+{
+	"name": "azure-1322-1factory",
+	"properties": {
+		"trustModeClaimForMi": {
+			"value": "Disabled",
+			"editable": true
+		}
+	},
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "bcf819c6-5f64-4890-9178-31ad9347f771",
+		"tenantId": "9df59392-4279-4fc5-924e-ede14a4f9d2a"
+	}
+}
