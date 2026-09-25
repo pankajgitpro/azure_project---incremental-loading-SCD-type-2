@@ -5,8 +5,6 @@
 			{
 				"name": "ForEach1",
 				"type": "ForEach",
-				"state": "Inactive",
-				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [],
 				"userProperties": [],
 				"typeProperties": {
@@ -162,9 +160,14 @@
 			{
 				"name": "Copy data1",
 				"type": "Copy",
-				"state": "Inactive",
-				"onInactiveMarkAs": "Succeeded",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "max_cdc",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"policy": {
 					"timeout": "0.12:00:00",
 					"retry": 0,
@@ -180,7 +183,7 @@
 							{
 								"name": "cdc",
 								"value": {
-									"value": "@activity('max_cdc').output.resultSets[0].rows[0].cdc",
+									"value": "@activity('max_cdc').output.resultSets[0].rows[0].max_cdc",
 									"type": "Expression"
 								}
 							}
@@ -231,7 +234,14 @@
 			{
 				"name": "max_cdc",
 				"type": "Script",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "ForEach1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"policy": {
 					"timeout": "0.12:00:00",
 					"retry": 0,
@@ -249,12 +259,40 @@
 						{
 							"type": "Query",
 							"text": {
-								"value": "@select max(stream_timestamp) as max_cdc from dbo.FactStream",
+								"value": "select max(stream_timestamp) as max_cdc from dbo.FactStream",
 								"type": "Expression"
 							}
 						}
 					],
 					"scriptBlockExecutionTimeout": "02:00:00"
+				}
+			},
+			{
+				"name": "Web1",
+				"type": "WebActivity",
+				"dependsOn": [
+					{
+						"activity": "Copy data1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"method": "POST",
+					"url": "https://prod-11.northcentralus.logic.azure.com:443/workflows/f468d0f404d64c2ab6f1da8b2865f5cc/triggers/When_an_HTTP_request_is_received/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2FWhen_an_HTTP_request_is_received%2Frun&sv=1.0&sig=UJ7FyWKhoE3oR7uevHmiGxi7saHwdJfUZkKb6_b6CEs",
+					"body": {
+						"value": "{\n  \"pipeline_Id\": \"@{pipeline().DataFactory}\",\n  \"pipeline_run_id\": \"@{pipeline().RunId}\"\n}",
+						"type": "Expression"
+					}
 				}
 			}
 		],
