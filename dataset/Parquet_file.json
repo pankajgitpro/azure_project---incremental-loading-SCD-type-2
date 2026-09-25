@@ -1,5 +1,5 @@
 {
-	"name": "Parquet1",
+	"name": "Parquet_file",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "AzureDataLakeStorage1",
@@ -37,6 +37,5 @@
 			"compressionCodec": "snappy"
 		},
 		"schema": []
-	},
-	"type": "Microsoft.DataFactory/factories/datasets"
+	}
 }

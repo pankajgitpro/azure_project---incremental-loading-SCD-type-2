@@ -1,5 +1,5 @@
 {
-	"name": "Json1",
+	"name": "Json_newworls",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "AzureDataLakeStorage1",
@@ -36,6 +36,5 @@
 			}
 		},
 		"schema": {}
-	},
-	"type": "Microsoft.DataFactory/factories/datasets"
+	}
 }
