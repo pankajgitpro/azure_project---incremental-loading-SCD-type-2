@@ -131,7 +131,10 @@
 									"type": "DatasetReference",
 									"parameters": {
 										"container": "bronze-layer",
-										"folder": "cdc",
+										"folder": {
+											"value": "@{item().table}_cdc",
+											"type": "Expression"
+										},
 										"file": "cdc.json"
 									}
 								}
