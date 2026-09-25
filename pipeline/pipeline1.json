@@ -43,7 +43,7 @@
 								"source": {
 									"type": "AzureSqlSource",
 									"sqlReaderQuery": {
-										"value": "select * from @{item().schema}.@{item().table} where @{item().cdc_col} > '@{activity('last_cdc').output.value[0].cdc}'",
+										"value": "select *\nfrom @{item().schema}.@{item().table}\nwhere @{item().cdc_col} > '@{activity('last_cdc').output.firstRow.cdc}'",
 										"type": "Expression"
 									},
 									"queryTimeout": "02:00:00",
@@ -127,14 +127,11 @@
 									}
 								},
 								"dataset": {
-									"referenceName": "Json1",
+									"referenceName": "Json_newworls",
 									"type": "DatasetReference",
 									"parameters": {
 										"container": "bronze-layer",
-										"folder": {
-											"value": "@{item().table}_cdc",
-											"type": "Expression"
-										},
+										"folder": "cdc",
 										"file": "cdc.json"
 									}
 								}
