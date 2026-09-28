@@ -1,0 +1,40 @@
+
+bundle:
+  name: spotify_dab
+  uuid: acbe66c6-f924-4796-9bf8-2b834aa5a62c
+
+include:
+  - resources/*.yml
+
+artifacts:
+  python_artifact:
+    type: whl
+    build: uv build --wheel
+
+variables:
+  catalog:
+    description: The catalog to use
+  schema:
+    description: The schema to use
+
+targets:
+  dev:
+    mode: development
+    default: true
+    workspace:
+      host: http://127.0.0.1:7073
+    variables:
+      catalog: spotify_project
+      schema: dev
+  prod:
+    mode: production
+    workspace:
+      host: http://127.0.0.1:7073
+
+      root_path: /Workspace/Users/pan*****twal_******il.com#ext#@p******wal******gmail.onmicrosoft.com/.bundle/${bundle.name}/${bundle.target}
+    variables:
+      catalog: spotify_project
+      schema: prod
+    permissions:
+      - user_name: pank*********wal_gmail.com#ext#@pan*****lgmail.onmicrosoft.com
+        level: CAN_MANAGE
