@@ -1,4 +1,4 @@
-# azure_project
+# azure_project - incremental loading, SCD type 2
 # Azure Data Engineering Project – End-to-End Medallion Architecture
 
 ## Project Overview
